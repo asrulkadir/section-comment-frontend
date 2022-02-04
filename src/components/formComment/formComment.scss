@@ -1,0 +1,19 @@
+.comment-area {
+  width: 80%;
+  margin: 0 1rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+
+  &:focus {
+    outline: 1px solid rgb(83, 87, 182);
+  }
+}
+
+.reply {
+  width: 52vw;
+  margin: 1rem auto 0;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  padding: 2rem;
+}
