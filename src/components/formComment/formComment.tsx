@@ -120,8 +120,8 @@ const FormComment = ({
   };
 
   return (
-    <form className={reply ? 'reply' : 'comment'}>
-      <img src={imgSource} alt="" />
+    <form className={reply ? 'form-reply' : 'form-comment'}>
+      <img src={imgSource} alt="" className="img-profile" />
       <textarea
         name="add-comment"
         value={editedValue ? editedValue : addComment}

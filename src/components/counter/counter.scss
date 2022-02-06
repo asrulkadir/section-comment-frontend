@@ -1,3 +1,5 @@
+@import '../../sass/mixins.scss';
+
 .score {
   background-color: hsl(223, 19%, 93%);
   margin-right: 2rem;
@@ -7,6 +9,14 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
+
+  @include small-down {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+    width: 5rem;
+    height: 2.5rem;
+  }
 }
 
 .score-value {
@@ -15,10 +25,15 @@
   font-weight: bold;
 }
 
-.icon-counter {
+.icon-plus,
+.icon-minus {
   cursor: pointer;
 
   &:hover {
     color: rgb(83, 87, 182);
   }
+}
+
+.icon-minus {
+  margin-top: -0.5rem;
 }

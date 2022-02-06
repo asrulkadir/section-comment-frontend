@@ -1,3 +1,5 @@
+@import '../../sass/mixins.scss';
+
 .comment-area {
   width: 80%;
   margin: 0 1rem;
@@ -7,13 +9,77 @@
   &:focus {
     outline: 1px solid rgb(83, 87, 182);
   }
+
+  @include small-down {
+    grid-area: textarea;
+    width: 95%;
+    margin: auto;
+    height: 5rem;
+  }
 }
 
-.reply {
+.form-comment {
+  width: 60vw;
+  margin: 1rem auto 0;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  padding: 2rem;
+
+  @include medium-only {
+    width: 90vw;
+  }
+
+  @include small-down {
+    width: 95vw;
+    display: grid;
+    grid-template-areas:
+      'textarea textarea'
+      'image button ';
+    padding: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.form-reply {
   width: 52vw;
   margin: 1rem auto 0;
   background-color: white;
   border-radius: 10px;
   display: flex;
   padding: 2rem;
+
+  @include medium-only {
+    width: 75vw;
+  }
+}
+
+.send-button {
+  height: 2rem;
+  width: 5rem;
+  background-color: rgb(83, 87, 182);
+  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  @include small-down {
+    grid-area: button;
+    margin: 0.5rem auto;
+  }
+}
+
+.img-profile {
+  @include small-down {
+    grid-area: image;
+    width: 50%;
+    margin: 0.5rem auto;
+  }
 }

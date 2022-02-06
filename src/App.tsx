@@ -8,7 +8,7 @@ import { Delete, Edit, Reply } from './assets/icons';
 import FormComment from './components/formComment/formComment';
 import Modal from './components/modal/modal';
 import { DataBackend } from './types/data.type';
-import { convertTime } from './utils/convertTime';
+import { timeAgo } from './utils/convertTime';
 
 function App() {
   const [data, setData] = useState<DataBackend>(dataComment);
@@ -17,6 +17,11 @@ function App() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteReplyById, setDeleteReplyById] = useState<number>(0);
   const [deleteCommentById, setDeleteCommentById] = useState<number>(0);
+  const [width, setWidth] = useState<number>(window.innerWidth);
+
+  const handleSizeChange = () => {
+    setWidth(window.innerWidth);
+  };
 
   useEffect(() => {
     apiService
@@ -27,6 +32,8 @@ function App() {
       .catch((err) => {
         alert(err.response.data.error);
       });
+
+    window.addEventListener('resize', handleSizeChange);
   }, []);
 
   const handleReply = (id: number) => {
@@ -54,22 +61,26 @@ function App() {
           return (
             <div key={comment.id}>
               <div className="comment">
-                <Counter
-                  score={comment.score}
-                  id={comment.id}
-                  isComment={true}
-                  setData={setData}
-                />
+                {width >= 768 && (
+                  <Counter
+                    score={comment.score}
+                    id={comment.id}
+                    isComment={true}
+                    setData={setData}
+                  />
+                )}
+
                 <div className="wrapper-username">
                   <div className="user">
                     <div>
                       <img src={comment.image} alt="" />
                       <p className="username">{comment.username}</p>
                       <p className="created-at">
-                        {convertTime(comment.created_at)}
+                        {timeAgo(comment.created_at)}
                       </p>
                     </div>
-                    {comment.username === data.current_user.username ? (
+                    {comment.username === data.current_user.username &&
+                    width >= 768 ? (
                       <div className="delete-edit">
                         <div
                           className="delete"
@@ -84,18 +95,53 @@ function App() {
                           <Edit /> <p>Edit</p>
                         </div>
                       </div>
-                    ) : (
+                    ) : comment.username !== data.current_user.username &&
+                      width >= 768 ? (
                       <div
                         className="reply-icon"
                         onClick={() => handleReply(comment.id)}
                       >
                         <Reply /> <p>Reply</p>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                   <div className="content">
                     <p>{comment.content}</p>
                   </div>
+                  {width < 768 && (
+                    <div className="counter-reply-mobile">
+                      <Counter
+                        score={comment.score}
+                        id={comment.id}
+                        isComment={true}
+                        setData={setData}
+                      />
+
+                      {comment.username === data.current_user.username ? (
+                        <div className="delete-edit">
+                          <div
+                            className="delete"
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            <Delete /> <p>Delete</p>
+                          </div>
+                          <div
+                            className="edit"
+                            onClick={() => handleReply(comment.id)}
+                          >
+                            <Edit /> <p>Edit</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="reply-icon"
+                          onClick={() => handleReply(comment.id)}
+                        >
+                          <Reply /> <p>Reply</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               {comment.id === idComment &&
@@ -129,12 +175,14 @@ function App() {
                   return (
                     <div key={reply.id} className="replies">
                       <div className="reply">
-                        <Counter
-                          score={reply.score}
-                          id={reply.id}
-                          isReply={true}
-                          setData={setData}
-                        />
+                        {width >= 768 && (
+                          <Counter
+                            score={reply.score}
+                            id={reply.id}
+                            isReply={true}
+                            setData={setData}
+                          />
+                        )}
                         <div className="wrapper-username">
                           <div className="user">
                             <div>
@@ -147,17 +195,19 @@ function App() {
                                 </p>
                               )}
                               <p className="created-at">
-                                {convertTime(reply.created_at)}
+                                {timeAgo(reply.created_at)}
                               </p>
                             </div>
-                            {data.current_user.username !== reply.username ? (
+                            {data.current_user.username !== reply.username &&
+                            width >= 768 ? (
                               <div
                                 className="reply-icon"
                                 onClick={() => handleReply2(reply.id)}
                               >
                                 <Reply /> <p>Reply</p>
                               </div>
-                            ) : (
+                            ) : data.current_user.username === reply.username &&
+                              width >= 768 ? (
                               <div className="delete-edit">
                                 <div
                                   className="delete"
@@ -172,7 +222,7 @@ function App() {
                                   <Edit /> <p>Edit</p>
                                 </div>
                               </div>
-                            )}
+                            ) : null}
                           </div>
                           <div className="content">
                             <p>
@@ -182,6 +232,42 @@ function App() {
                               {reply.content}
                             </p>
                           </div>
+                          {width < 768 && (
+                            <div className="counter-reply-mobile">
+                              <Counter
+                                score={reply.score}
+                                id={reply.id}
+                                isReply={true}
+                                setData={setData}
+                              />
+
+                              {reply.username === data.current_user.username ? (
+                                <div className="delete-edit">
+                                  <div
+                                    className="delete"
+                                    onClick={() =>
+                                      handleDeleteComment(reply.id)
+                                    }
+                                  >
+                                    <Delete /> <p>Delete</p>
+                                  </div>
+                                  <div
+                                    className="edit"
+                                    onClick={() => handleReply(reply.id)}
+                                  >
+                                    <Edit /> <p>Edit</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="reply-icon"
+                                  onClick={() => handleReply(reply.id)}
+                                >
+                                  <Reply /> <p>Reply</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                       {reply.id === idReply &&

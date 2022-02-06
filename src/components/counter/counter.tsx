@@ -75,7 +75,7 @@ const Counter = ({ score, id, isComment, isReply, setData }: Props) => {
   return (
     <div className="score">
       <div
-        className="icon-counter"
+        className="icon-plus"
         onMouseOver={() => setFillPlus('#5357B6')}
         onMouseLeave={() => setFillPlus('#C5C6EF')}
         onClick={handlePlus}
@@ -84,7 +84,7 @@ const Counter = ({ score, id, isComment, isReply, setData }: Props) => {
       </div>
       <div className="score-value">{score}</div>
       <div
-        className="icon-counter"
+        className="icon-minus"
         onMouseOver={() => setFillMinus('#5357B6')}
         onMouseLeave={() => setFillMinus('#C5C6EF')}
         onClick={handleMinus}
