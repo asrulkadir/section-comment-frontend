@@ -36,6 +36,7 @@ Users should be able to:
 - Sass
 - Go Languange
 - PostgreSQL
+- Typescript
 - [React](https://reactjs.org/) - JS library
 
 ## Author
