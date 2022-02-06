@@ -21,12 +21,11 @@ function App() {
   useEffect(() => {
     apiService
       .getDataBackend()
-      .then((data) => {
-        setData(data.data);
+      .then((res) => {
+        setData(res.data);
       })
       .catch((err) => {
-        // alert(err);
-        console.log(err);
+        alert(err.response.data.error);
       });
   }, []);
 
@@ -59,6 +58,7 @@ function App() {
                   score={comment.score}
                   id={comment.id}
                   isComment={true}
+                  setData={setData}
                 />
                 <div className="wrapper-username">
                   <div className="user">
@@ -105,6 +105,10 @@ function App() {
                   buttonName={actionName.reply}
                   username={data.current_user.username}
                   replyingTo={comment.username}
+                  id={comment.id}
+                  setData={setData}
+                  setIdComment={setIdComment}
+                  setIdReply={setIdReply}
                 />
               ) : comment.id === idComment &&
                 comment.username === data.current_user.username ? (
@@ -114,6 +118,9 @@ function App() {
                   editValue={comment.content}
                   username={data.current_user.username}
                   id={comment.id}
+                  setData={setData}
+                  setIdComment={setIdComment}
+                  setIdReply={setIdReply}
                 />
               ) : null}
 
@@ -126,6 +133,7 @@ function App() {
                           score={reply.score}
                           id={reply.id}
                           isReply={true}
+                          setData={setData}
                         />
                         <div className="wrapper-username">
                           <div className="user">
@@ -183,6 +191,11 @@ function App() {
                           buttonName={actionName.reply}
                           reply={true}
                           username={data.current_user.username}
+                          replyingTo={reply.username}
+                          id={comment.id}
+                          setData={setData}
+                          setIdReply={setIdReply}
+                          setIdComment={setIdComment}
                         />
                       ) : reply.id === idReply &&
                         data.current_user.username === reply.username ? (
@@ -193,6 +206,9 @@ function App() {
                           editValue={reply.content}
                           username={data.current_user.username}
                           id={reply.id}
+                          setData={setData}
+                          setIdReply={setIdReply}
+                          setIdComment={setIdComment}
                         />
                       ) : null}
                     </div>
@@ -206,6 +222,9 @@ function App() {
           imgSource={data.current_user.image}
           buttonName={actionName.send}
           username={data.current_user.username}
+          setData={setData}
+          setIdComment={setIdComment}
+          setIdReply={setIdReply}
         />
       </div>
       <Modal
@@ -215,6 +234,7 @@ function App() {
         deleteReplyById={deleteReplyById}
         setDeleteCommentById={setDeleteCommentById}
         setDeleteReplyById={setDeleteReplyById}
+        setData={setData}
       />
     </>
   );

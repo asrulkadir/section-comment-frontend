@@ -1,5 +1,6 @@
 import React from 'react';
 import apiService from '../../api/apiService';
+import { DataBackend } from '../../types/data.type';
 import './modal.scss';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   setDeleteCommentById: React.Dispatch<React.SetStateAction<number>>;
   deleteReplyById: number;
   setDeleteReplyById: React.Dispatch<React.SetStateAction<number>>;
+  setData: React.Dispatch<React.SetStateAction<DataBackend>>;
 }
 
 const Modal = ({
@@ -18,6 +20,7 @@ const Modal = ({
   deleteReplyById,
   setDeleteCommentById,
   setDeleteReplyById,
+  setData,
 }: Props) => {
   const handleDelete = () => {
     setShowModal(false);
@@ -26,7 +29,9 @@ const Modal = ({
         .deleteComment(deleteCommentById)
         .then(() => {
           setDeleteCommentById(0);
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);
@@ -38,7 +43,9 @@ const Modal = ({
         .deleteReply(deleteReplyById)
         .then(() => {
           setDeleteReplyById(0);
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);

@@ -24,6 +24,7 @@ interface RepliesBackend {
   username: string;
   image: string;
   replying_to: string;
+  id_comment: number;
 }
 
 // interface Comment {
@@ -80,6 +81,7 @@ export interface IPostReply {
   username: string;
   score: number;
   replying_to: string;
+  id_comment: number;
 }
 
 export interface IActionName {

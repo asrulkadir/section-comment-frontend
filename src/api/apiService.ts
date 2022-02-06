@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   IPostComment,
   DataBackend,
@@ -6,6 +5,7 @@ import {
   IEditContent,
   IEditScore,
 } from '../types/data.type';
+import http from '../http-common';
 
 class apiService {
   getData() {
@@ -18,39 +18,39 @@ class apiService {
   }
 
   getDataBackend() {
-    return axios.get<DataBackend>('http://localhost:1323/v1/data');
+    return http.get<DataBackend>('v1/data');
   }
 
   postComment(data: IPostComment) {
-    return axios.post('http://localhost:1323/v1/comments', data);
+    return http.post('v1/comments', data);
   }
 
   deleteComment(id: number) {
-    return axios.delete(`http://localhost:1323/v1/comments/${id}`);
+    return http.delete(`v1/comments/${id}`);
   }
 
   postReply(data: IPostReply) {
-    return axios.post('http://localhost:1323/v1/replies', data);
+    return http.post('v1/replies', data);
   }
 
   deleteReply(id: number) {
-    return axios.delete(`http://localhost:1323/v1/replies/${id}`);
+    return http.delete(`v1/replies/${id}`);
   }
 
   editComment(id: number | undefined, data: IEditContent) {
-    return axios.put(`http://localhost:1323/v1/comments/${id}`, data);
+    return http.put(`v1/comments/${id}`, data);
   }
 
   editReply(id: number | undefined, data: IEditContent) {
-    return axios.put(`http://localhost:1323/v1/replies/${id}`, data);
+    return http.put(`v1/replies/${id}`, data);
   }
 
   editCommentScore(id: number | undefined, data: IEditScore) {
-    return axios.put(`http://localhost:1323/v1/comments/${id}/score`, data);
+    return http.put(`v1/comments/${id}/score`, data);
   }
 
   editReplyScore(id: number | undefined, data: IEditScore) {
-    return axios.put(`http://localhost:1323/v1/replies/${id}/score`, data);
+    return http.put(`v1/replies/${id}/score`, data);
   }
 }
 

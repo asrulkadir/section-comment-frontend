@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { IEditContent, IPostComment, IPostReply } from '../../types/data.type';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import {
+  DataBackend,
+  IEditContent,
+  IPostComment,
+  IPostReply,
+} from '../../types/data.type';
 import { actionName } from '../../utils/dataComment';
 import apiService from '../../api/apiService';
 
@@ -13,6 +18,9 @@ interface Props {
   username: string;
   replyingTo?: string;
   id?: number;
+  setData: Dispatch<SetStateAction<DataBackend>>;
+  setIdComment: Dispatch<SetStateAction<number>>;
+  setIdReply: Dispatch<SetStateAction<number>>;
 }
 
 const FormComment = ({
@@ -23,32 +31,38 @@ const FormComment = ({
   username,
   replyingTo,
   id,
+  setData,
+  setIdComment,
+  setIdReply,
 }: Props) => {
   const [addComment, setAddComment] = useState<string>('');
   const [editedValue, setEditedValue] = useState<string>(editValue || '');
 
   const handleChange = (e: any) => {
-    editedValue
-      ? setEditedValue(e.target.value)
-      : setAddComment(e.target.value);
+    editValue ? setEditedValue(e.target.value) : setAddComment(e.target.value);
   };
 
   const handleSubmit = (e: any, buttonName: string) => {
     e.preventDefault();
+    setIdReply(0);
+    setIdComment(0);
+
     if (buttonName === actionName.send) {
       const data: IPostComment = {
         content: addComment,
         score: 0,
         username: username,
       };
-
       apiService
         .postComment(data)
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
+          setAddComment('');
         })
         .catch((err) => {
-          alert(err.response.data.error);
+          alert(err);
         });
     }
 
@@ -58,15 +72,17 @@ const FormComment = ({
         score: 0,
         username: username,
         replying_to: replyingTo ? replyingTo : '',
+        id_comment: id ? id : 0,
       };
-
       apiService
         .postReply(data)
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
-          alert(err.response.data.error);
+          alert(err);
         });
     }
 
@@ -74,14 +90,15 @@ const FormComment = ({
       const data: IEditContent = {
         content: editedValue,
       };
-
       apiService
         .editComment(id, data)
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
-          alert(err.response.data.error);
+          alert(err);
         });
     }
 
@@ -89,14 +106,15 @@ const FormComment = ({
       const data: IEditContent = {
         content: editedValue,
       };
-
       apiService
         .editReply(id, data)
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
-          alert(err.response.data.error);
+          alert(err);
         });
     }
   };

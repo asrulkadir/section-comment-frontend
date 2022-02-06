@@ -57,13 +57,14 @@ export const dataComment: DataBackend = {
       image: '',
       replies: [
         {
-          id: 1,
+          id: 0,
           content: '',
           created_at: '',
           score: 0,
           username: '',
           image: '',
           replying_to: '',
+          id_comment: 0,
         },
       ],
     },

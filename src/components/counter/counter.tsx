@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import apiService from '../../api/apiService';
 import { Minus, Plus } from '../../assets/icons';
+import { DataBackend } from '../../types/data.type';
 import './counter.scss';
 
 interface Props {
@@ -8,9 +9,10 @@ interface Props {
   id: number;
   isReply?: boolean;
   isComment?: boolean;
+  setData: Dispatch<SetStateAction<DataBackend>>;
 }
 
-const Counter = ({ score, id, isComment, isReply }: Props) => {
+const Counter = ({ score, id, isComment, isReply, setData }: Props) => {
   const [fillPlus, setFillPlus] = useState<string>('#C5C6EF');
   const [fillMinus, setFillMinus] = useState<string>('#C5C6EF');
 
@@ -19,7 +21,9 @@ const Counter = ({ score, id, isComment, isReply }: Props) => {
       apiService
         .editCommentScore(id, { score: score + 1 })
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);
@@ -30,7 +34,9 @@ const Counter = ({ score, id, isComment, isReply }: Props) => {
       apiService
         .editReplyScore(id, { score: score + 1 })
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);
@@ -41,9 +47,11 @@ const Counter = ({ score, id, isComment, isReply }: Props) => {
   const handleMinus = () => {
     if (isComment) {
       apiService
-        .editCommentScore(id, { score: score - 1 })
+        .editCommentScore(id, { score: score > 0 ? score - 1 : 0 })
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);
@@ -52,9 +60,11 @@ const Counter = ({ score, id, isComment, isReply }: Props) => {
 
     if (isReply) {
       apiService
-        .editReplyScore(id, { score: score - 1 })
+        .editReplyScore(id, { score: score > 0 ? score - 1 : 0 })
         .then(() => {
-          window.location.reload();
+          apiService.getDataBackend().then((res) => {
+            setData(res.data);
+          });
         })
         .catch((err) => {
           alert(err.response.data.error);
