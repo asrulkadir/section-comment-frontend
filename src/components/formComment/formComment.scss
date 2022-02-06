@@ -51,7 +51,18 @@
   padding: 2rem;
 
   @include medium-only {
-    width: 75vw;
+    width: 90vw;
+  }
+
+  @include small-down {
+    width: 82.5vw;
+    display: grid;
+    grid-template-areas:
+      'textarea textarea'
+      'image button ';
+    padding: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

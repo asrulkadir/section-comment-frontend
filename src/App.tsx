@@ -253,7 +253,7 @@ function App() {
                                   </div>
                                   <div
                                     className="edit"
-                                    onClick={() => handleReply(reply.id)}
+                                    onClick={() => handleReply2(reply.id)}
                                   >
                                     <Edit /> <p>Edit</p>
                                   </div>
@@ -261,7 +261,7 @@ function App() {
                               ) : (
                                 <div
                                   className="reply-icon"
-                                  onClick={() => handleReply(reply.id)}
+                                  onClick={() => handleReply2(reply.id)}
                                 >
                                   <Reply /> <p>Reply</p>
                                 </div>
